@@ -1,0 +1,113 @@
+version: '1.0.0'
+
+# здесь хранятся описания макросов
+# если вы создали новый макрос, пожалуйста, опишите его примерно как снизу
+
+macros:
+  - name: ins_hub_macros
+    description: Макрос для вставки md5, которых еще нет в хабе.
+    arguments:
+      - name: hub_table
+        type: string
+        description: Название таблицы хаба в row vault
+      - name: source_table
+        type: string
+        description: название dbt модели, которая является источником для новых md5
+      - name: key_join
+        type: string
+        description: название столбца, в котором хранится md5, то есть rk хаба
+      - name: args
+        type: tuple из string`ов
+        description: названия полей, которые используются в генерации rk md5
+  
+  - name: select_modif_m_sat
+    description: Макрос для вставки новых или измененных записей в м сат.
+    arguments:
+      - name: table_name
+        type: string
+        description: название таблицы м сата, в которую хотим вставить новые или измененные строки
+      - name: source_table
+        type: string
+        description: название таблицы источника - по сути сейчас берем данные из подрезок
+      - name: pks_entity_source
+        type: tuple из string`ов
+        description: поля из таблицы источника, по которым строится внешний ключ - ключ сущность rk
+      - name: entity_key
+        type: string
+        description: название поля в котором хранится rk сущность в таргете - м сате
+      - name: logical_keys
+        type: tuple из string`ов
+        description: поля из таблицы источника по которым определяются группы - то есть по сути это логические ключи
+      - name: type_key_field
+        type: string
+        description: поле, по которому уникально идентифицируются строки в группе строк - row_num, row_type_code или другое
+      - name: attrs_source
+        type: tuple из string`ов
+        description: названия всех полей атрибутов из источника - таблица подрезки
+      - name: attrs_sat
+        type: tuple из string`ов
+        description: названия всех полей атрибутов из таргета - м сата
+
+  - name: ins_pit_new_macros
+    description: Макрос для вставки новых записей в pit.
+    arguments:
+      - name: dim_name
+        type: string
+        description: имя сущности (капсом)
+      - name: tables_field_m_name
+        type: tuple из string`ов
+        description: перечень названий таблиц M_Satellite и их полей в Pit таблице для dttm из M_Satellite
+      - name: entity_key
+        type: string
+        description: название поля в котором хранится rk сущности
+
+  - name: ins_pit_modif_macros
+    description: Макрос для вставки модифицированных записей в pit.
+    arguments:
+      - name: dim_name
+        type: string
+        description: имя сущности (капсом)
+      - name: tables_field_m_name
+        type: tuple из string`ов
+        description: перечень названий таблиц M_Satellite и их полей в Pit таблице для dttm из M_Satellite
+      - name: entity_key
+        type: string
+        description: название поля в котором хранится rk сущности
+
+    name: union_sat_datas
+    description: Макрос для объединения саттелитов сущности (используется в дальнейшем для sal).
+    arguments:
+      - name: mass_tables
+        type: tuple из tupl`ов string`ов
+        description: состоит из массивов, которые включают в себя название саттелита, столбцы логического ключа
+      - name: pseudo_col
+        type: tuple из string`ов
+        description: перечень псевдоназваний для колонок логического ключа
+      - name: dim
+        type: string
+        description: название сущности
+
+    name: ins_dim_macros
+    description: Макрос для вставки записей в DIM.
+    arguments:
+      - name: sal_table
+        type: string
+        description: SAL таблица для сущности
+      - name: pit_table
+        type: tuple из string`ов
+        description: PIT таблица для сущности и перечисление столбцов, где хранятся данные о (M_)SAT
+      - name: entity_key
+        type: string
+        description: название поля в котором хранится rk сущности
+      - name: sat_tables
+        type: tuple из string`ов
+        description: записывается в виде - ((source(sat_name), sat_name, (columns, ), sat_type, oid), ),
+                    где (source(sat_name) - название (M_)SAT,
+                        sat_name - ссокращенное название (M_)SAT (без зависимости),
+                        columns - название атрибутов в (M_)SAT,
+                        sat_type - тип (M_)SAT ('M'/'S'),
+                        oid - код системы
+      - name: columns_name
+        type: tuple из string`ов
+        description: названия атрибутов, которые хранятся в DIM 
+  

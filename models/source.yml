@@ -1,0 +1,51 @@
+version: 2  
+
+sources:  
+  - name: dbt_schema
+    database: postgres  
+    schema: dbt_schema  
+    tables:  
+      # ODS
+      - name: ods_client_csv
+      - name: ods_firebird_client
+      - name: ods_firebird_phone
+      - name: ods_profile_card_post
+      - name: ods_receipt_post
+      
+      # RV CЛОЙ
+      # HUBS
+      - name: "GPR_RV_H_CARD"
+      - name: "GPR_RV_H_CLIENT"
+      
+      # E-SAT
+      - name: "GPR_RV_E_CARD"
+      - name: "GPR_RV_E_CLIENT"
+      
+      # M-SAT
+      - name: "GPR_RV_M_CLIENT_PHONES"
+      - name: "GPR_RV_M_CLIENT_PROFILE_POST"
+      - name: "GPR_RV_M_CLIENT_SUBWAY_STAR"
+      
+      # SAT
+      - name: "GPR_RV_S_PROFILE_CARD_POST"
+      - name: "GPR_RV_S_CLIENT_CLIENT_FIREBIRD"
+      
+      # T-LINK
+      - name: "GPR_RV_T_RECEIPT_POST"
+      
+      # BV CЛОЙ
+      # SAL
+      - name: "GPR_BV_A_CARD"
+      - name: "GPR_BV_A_CLIENT"
+      
+      # BRIDGE
+      - name: "GPR_BV_B_RECEIPT_CARD_POST"
+      
+      # PIT
+      - name: "GPR_BV_P_CARD"
+      - name: "GPR_BV_P_CLIENT"
+      
+      # EM CЛОЙ
+      # DIM
+      - name: "GPR_EM_DIM_CARD"
+      - name: "GPR_EM_DIM_CLIENT"
